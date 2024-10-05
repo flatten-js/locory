@@ -1,0 +1,22 @@
+# Version Control System
+.git
+
+# Git-related files
+**/.gitignore
+
+# Next.js related
+**/.next
+
+# Docker files
+# Docker watch mode to detect changes and trigger automatic rebuilds
+# Dockerfile
+# compose.yaml
+
+# Dependencies
+**/node_modules
+
+# Documentation
+**/README.md
+
+# Environment variables
+**/.env
