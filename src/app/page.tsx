@@ -13,7 +13,7 @@ export default async function Home() {
       <main>
         <Inner center>
           <Typography variant="h1" className="mb-4" asChild>
-            <h1>Re Create <span className="text-[hsl(280,100%,70%)]">T3</span> App</h1>
+            <h1>Recreate <span className="text-[hsl(280,100%,70%)]">T3</span> App</h1>
           </Typography>
           <Typography variant="lead" className="mb-8" asChild>
             <h2>Extended version with shadcn + Docker</h2>

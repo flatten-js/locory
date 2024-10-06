@@ -1,4 +1,4 @@
-# Re Create T3 App
+# Recreate T3 App
 
 This is an extended version of a [T3 Stack](https://create.t3.gg/) project bootstrapped with [`create-t3-app`](https://github.com/t3-oss/create-t3-app.git), featuring shadcn + Docker.
 
