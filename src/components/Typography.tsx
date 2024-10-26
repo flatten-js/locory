@@ -18,10 +18,14 @@ const typographyVariants = cva(
         large: 'text-lg font-semibold',
         small: 'text-sm font-medium leading-none',
         muted: 'text-sm text-muted-foreground'
+      },
+      wrap: {
+        true: 'flex flex-wrap'
       }
     },
     defaultVariants: {
-      variant: "p"
+      variant: "p",
+      wrap: false
     }
   }
 )
@@ -33,11 +37,11 @@ export interface TypographyProps
 }
 
 const Typography = React.forwardRef<HTMLDivElement, TypographyProps>(
-  ({ className, variant, asChild = false, ...props }, ref) => {
+  ({ className, variant, wrap, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "div"
     return (
       <Comp
-        className={cn(typographyVariants({ variant, className }))}
+        className={cn(typographyVariants({ variant, wrap, className }))}
         ref={ref}
         {...props}
       />
