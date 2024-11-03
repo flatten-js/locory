@@ -7,6 +7,9 @@ import { Hero } from "@/components/Hero";
 import { Button } from "@/components/ui/button";
 import AnimatedGridPattern from "@/components/ui/animated-grid-pattern";
 
+import { env } from "@/env";
+
+
 export default async function TopPage() {
   return (
     <Hero className="overflow-hidden" asChild>
@@ -19,7 +22,7 @@ export default async function TopPage() {
         </Typography>
         <div className="flex gap-2">
           <Button asChild>
-            <Link href="/api/auth/signin">Get Started</Link>
+            <Link href={env.NEXT_PUBLIC_LOGIN_PATH}>Get Started</Link>
           </Button>
           <Button variant="ghost" asChild>
             <a href="https://github.com/flatten-js/recreate-t3-app.git" target="_blank">
