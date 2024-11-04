@@ -7,6 +7,8 @@ import { useForm } from "react-hook-form"
 import { signIn } from "next-auth/react"
 import { z } from "zod"
 
+import { env } from "@/env"
+
 
 export const State = {
   INITIAL: 0,
@@ -34,7 +36,7 @@ export function usePage() {
 
   async function handleSubmit(data: z.infer<typeof schema>) {
     setState(State.PROCESSING)
-    const result = await signIn("email", { email: data.email, callbackUrl: '/home', redirect: false });
+    const result = await signIn("email", { email: data.email, callbackUrl: env.NEXT_PUBLIC_PROTECTED_ROOT_PATH, redirect: false });
     if (result?.error) {
       form.setError("email", { message: "An unexpected error occurred. Please try again later." });
       setState(State.INITIAL)

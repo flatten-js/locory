@@ -17,7 +17,7 @@ export default withAuth(
     
     // If user is already logged in, redirect to the first protected path
     if (authPaths.includes(pathname) && token) {
-      return NextResponse.redirect(new URL('/home', req.url));
+      return NextResponse.redirect(new URL(env.NEXT_PUBLIC_PROTECTED_ROOT_PATH, req.url));
     }
 
     // If user is not logged in, redirect to the login page

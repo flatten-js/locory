@@ -33,6 +33,7 @@ export const env = createEnv({
    */
   client: {
     NEXT_PUBLIC_LOGIN_PATH: z.string().startsWith('/').default('/login'),
+    NEXT_PUBLIC_PROTECTED_ROOT_PATH: z.string().startsWith('/').default('/dashboard'),
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
   },
 
@@ -48,6 +49,7 @@ export const env = createEnv({
     EMAIL_SERVER: process.env.EMAIL_SERVER,
     EMAIL_FROM: process.env.EMAIL_FROM,
     NEXT_PUBLIC_LOGIN_PATH: process.env.NEXT_PUBLIC_LOGIN_PATH,
+    NEXT_PUBLIC_PROTECTED_ROOT_PATH: process.env.NEXT_PUBLIC_PROTECTED_ROOT_PATH,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

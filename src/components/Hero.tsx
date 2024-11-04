@@ -11,10 +11,14 @@ const heroVariants = cva(
     variants: {
       background: {
         true: "absolute inset-0 z-[-1]"
+      },
+      flexible: {
+        true: 'w-full h-full flex-1 overflow-y-auto overflow-x-hidden'
       }
     },
     defaultVariants: {
-      background: false
+      background: false,
+      flexible: false
     }
   }
 )
@@ -27,11 +31,11 @@ export interface HeroProps
 }
 
 const Hero = React.forwardRef<HTMLDivElement, HeroProps>(
-  ({ className, background, asChild = false, ...props }, ref) => {
+  ({ className, background, flexible, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "div"
     return (
       <Comp
-        className={cn(heroVariants({ background, className }))}
+        className={cn(heroVariants({ background, flexible, className }))}
         ref={ref}
         {...props}
       />
