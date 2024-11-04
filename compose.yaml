@@ -27,7 +27,19 @@ services:
       MYSQL_DATABASE: recreate-t3-app
     volumes:
       - mysql_data:/var/lib/mysql
-  
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.2.1
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOSTS=mysql
+      - PMA_USER=root
+      - PMA_PASSWORD=password
+    ports:
+      - "127.0.0.1:8080:80"
+    depends_on:
+      - mysql
+    
   mailpit:
     image: axllent/mailpit:v1.20.5
     ports:

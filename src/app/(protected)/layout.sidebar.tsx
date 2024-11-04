@@ -1,10 +1,10 @@
 'use client'
 
+import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { signOut } from "next-auth/react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Settings, LogOut, LayoutDashboard } from "lucide-react"
-import Link from "next/link"
+import { Settings, LogOut, LayoutDashboard, ChevronsUpDown } from "lucide-react"
+import { type Session } from "next-auth"
 
 import { 
   Sidebar, 
@@ -12,18 +12,19 @@ import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarGroupContent,
-  SidebarHeader,
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarFooter
 } from "@/components/ui/sidebar"
-import { Button } from "@/components/ui/button"
-
-const userData = {
-  name: "Jane Doe",
-  avatar: "/placeholder.svg?height=32&width=32"
-}
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuSeparator, 
+  DropdownMenuTrigger 
+} from "@/components/ui/dropdown-menu"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 type SidebarItem = {
   label: string
@@ -47,29 +48,15 @@ const AccountItems: SidebarItem[] = [
   }
 ]
 
-export function LayoutSidebar() {
+type LayoutSidebarProps = {
+  user: Session["user"]
+}
+
+export function LayoutSidebar({ user }: LayoutSidebarProps) {
   const pathname = usePathname()
 
   return (
     <Sidebar>
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <div
-              className="w-full flex items-center justify-start gap-4"
-            >
-              <Avatar>
-                <AvatarImage src={userData.avatar} alt={userData.name} />
-                <AvatarFallback>{userData.name.charAt(0)}</AvatarFallback>
-              </Avatar>
-              <div className="flex flex-col items-start text-left">
-                <span className="font-medium">{userData.name}</span>
-              </div>
-            </div>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
-
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Overview</SidebarGroupLabel>
@@ -82,27 +69,7 @@ export function LayoutSidebar() {
                       <Link href={item.href}>
                         <item.icon className="mr-2 h-4 w-4" />
                         <span>{item.label}</span>
-                    </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))
-              }
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        <SidebarGroup>
-          <SidebarGroupLabel>Account</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {
-                AccountItems.map(item => (
-                  <SidebarMenuItem key={item.href}>
-                    <SidebarMenuButton isActive={pathname === item.href} asChild>
-                      <Link href={item.href}>
-                        <item.icon className="mr-2 h-4 w-4" />
-                        <span>{item.label}</span>
-                    </Link>
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))
@@ -115,10 +82,42 @@ export function LayoutSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <Button className="w-full" onClick={() => signOut()}>
-              <LogOut className="mr-2 h-4 w-4" />
-              Logout
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuButton
+                  size="lg"
+                  className="w-full justify-start gap-4"
+                >
+                  <Avatar>
+                    <AvatarImage src={user.image ?? ''} alt={user.name ?? ''} />
+                    <AvatarFallback>{(user.name ?? '').charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col items-start text-left">
+                    <span className="font-medium">{ user.name }</span>
+                  </div>
+                  <div className="ml-auto flex items-center">
+                    <ChevronsUpDown className="ml-2 h-4 w-4" />
+                  </div>
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-56">
+                {
+                  AccountItems.map(item => (
+                    <DropdownMenuItem key={ item.href } asChild>
+                      <Link href={item.href}>
+                        <item.icon className="mr-2 h-4 w-4" />
+                        <span>{ item.label }</span>
+                      </Link>
+                    </DropdownMenuItem>
+                  ))
+                }
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={ () => signOut() }>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
