@@ -37,13 +37,18 @@ const OverviewItems: SidebarItem[] = [
     label: "Dashboard",
     href: "/dashboard",
     icon: LayoutDashboard
+  },
+  {
+    label: "Settings",
+    href: "/settings",
+    icon: Settings
   }
 ]
 
 const AccountItems: SidebarItem[] = [
   {
     label: "Settings",
-    href: "/settings",
+    href: "/settings?t=account",
     icon: Settings
   }
 ]
@@ -56,7 +61,7 @@ export function LayoutSidebar({ user }: LayoutSidebarProps) {
   const pathname = usePathname()
 
   return (
-    <Sidebar>
+    <Sidebar collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Overview</SidebarGroupLabel>
