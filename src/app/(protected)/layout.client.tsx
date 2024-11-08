@@ -17,9 +17,15 @@ export default function LayoutClient({
   user, 
   children 
 }: LayoutClientProps) {
+  const preloadedState = { 
+    user: { 
+      name: user.name ?? '' 
+    } 
+  }
+  
   return (
     <SidebarProvider>
-      <Provider store={ store(user.name ?? '') }>
+      <Provider store={ store(preloadedState) }>
         { children }
       </Provider>
     </SidebarProvider>
