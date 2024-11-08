@@ -4,7 +4,9 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { signOut } from "next-auth/react"
 import { Settings, LogOut, LayoutDashboard, ChevronsUpDown } from "lucide-react"
-import { type Session } from "next-auth"
+
+import { useAppSelector } from "@/stores/store"
+import { type RouterOutputs } from "@/trpc/react"
 
 import { 
   Sidebar, 
@@ -54,11 +56,12 @@ const AccountItems: SidebarItem[] = [
 ]
 
 type LayoutSidebarProps = {
-  user: Session["user"]
+  user: RouterOutputs["user"]["getProfile"]
 }
 
 export function LayoutSidebar({ user }: LayoutSidebarProps) {
   const pathname = usePathname()
+  const name = useAppSelector(state => state.user.name)
 
   return (
     <Sidebar collapsible="icon">
@@ -98,7 +101,7 @@ export function LayoutSidebar({ user }: LayoutSidebarProps) {
                     <AvatarFallback>{(user.name ?? '').charAt(0)}</AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col items-start text-left">
-                    <span className="font-medium">{ user.name }</span>
+                    <span className="font-medium">{ name }</span>
                   </div>
                   <div className="ml-auto flex items-center">
                     <ChevronsUpDown className="ml-2 h-4 w-4" />
