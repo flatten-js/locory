@@ -41,16 +41,13 @@ export function usePage({ user }: UsePageProps) {
   }
 
   async function handleSubmit(data: z.infer<typeof schema>) {
-    changeProfile.mutate(
-      { name: data.name }, 
-      { 
-        onSuccess: () => {
-          dispatch(setName(data.name))
-          toast.error("Profile updated")
-        },
-        onError: () => toast.error("Failed to update profile")
-      }
-    );
+    try {
+      await changeProfile.mutateAsync({ name: data.name })
+      dispatch(setName(data.name))
+      toast.success("Profile updated")
+    } catch (e) {
+      toast.error("Failed to update profile")
+    }
   }
 
   return { form, handleSubmit, activeTab, handleTabChange }

@@ -13,7 +13,7 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setName(state, action: PayloadAction<string>) {
+    setName(state, action: PayloadAction<UserState['name']>) {
       state.name = action.payload
     }
   }

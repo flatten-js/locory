@@ -10,6 +10,11 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { 
+  InputOTP, 
+  InputOTPGroup, 
+  InputOTPSlot 
+} from "@/components/ui/input-otp"
 
 import { Hero } from "@/components/Hero";
 import { Typography } from "@/components/Typography";
@@ -20,8 +25,10 @@ import type { States } from "./page.hooks";
 export default function LoginPage() {
   const { 
     state, 
-    form,
-    handleSubmit
+    emailForm,
+    verifyForm,
+    handleEmailSubmit,
+    handleVerifySubmit
   } = usePage();
 
   return (
@@ -33,11 +40,11 @@ export default function LoginPage() {
 
         <div className="w-10/12 sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5">
           {
-            ([State.INITIAL, State.PROCESSING] as States[]).includes(state) ? (
-              <Form key="email" {...form}>
-                <form className="w-full space-y-4" onSubmit={form.handleSubmit(handleSubmit)}>
+            ([State.INITIAL, State.EMAIL_PROCESSING] as States[]).includes(state) ? (
+              <Form {...emailForm}>
+                <form className="w-full space-y-4" onSubmit={emailForm.handleSubmit(handleEmailSubmit)}>
                   <FormField
-                    control={form.control}
+                    control={emailForm.control}
                     name="email"
                     render={({ field }) => (
                       <FormItem>
@@ -49,21 +56,50 @@ export default function LoginPage() {
                       </FormItem>
                     )}
                   />
-                  <Button type="submit" className="w-full" disabled={state == State.PROCESSING}>Continue</Button>
+                  <Button type="submit" className="w-full" disabled={state == State.EMAIL_PROCESSING}>Continue</Button>
                 </form>
               </Form>
-            ) : state == State.SUCCESS && (
-              <div className="text-center">
-                <Typography variant="h3" className="mb-4" asChild>
-                  <h3>Verification Email Sent</h3>
+            ) : state >= State.EMAIL_SUCCESS && (
+              <Form {...verifyForm}>
+                <Typography variant="small" className="mb-4 text-center justify-center" wrap asChild>
+                  <p>Enter the 6-digit code <span>sent to your email.</span></p>
                 </Typography>
-                <Typography variant="p" wrap className="text-muted-foreground" asChild>
-                  <p>
-                    We&apos;ve sent a verification link to your email address.
-                    Please check your inbox and click the link to complete the authentication process.
-                  </p>
-                </Typography>
-              </div>
+                <form className="w-full space-y-4" onSubmit={verifyForm.handleSubmit(handleVerifySubmit)}>
+                  <FormField
+                    control={verifyForm.control}
+                    name="token"
+                    render={({ field }) => (
+                      <FormItem> 
+                        <FormControl>
+                          <InputOTP 
+                            containerClassName="justify-center" 
+                            maxLength={6} 
+                            {...field}
+                          >
+                            <InputOTPGroup>
+                              <InputOTPSlot index={0} />
+                              <InputOTPSlot index={1} />
+                              <InputOTPSlot index={2} />
+                              <InputOTPSlot index={3} />
+                              <InputOTPSlot index={4} />
+                              <InputOTPSlot index={5} />
+                            </InputOTPGroup>
+                          </InputOTP>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button type="submit" className="w-full" disabled={state == State.VERIFY_PROCESSING}>Submit</Button>
+                  {
+                    state == State.VERIFY_ERROR && (
+                      <Typography variant="muted" className="text-destructive text-center">
+                        We apologize, but there was an issue during the login process. Please try again.
+                      </Typography>
+                    )
+                  }
+                </form>
+              </Form>
             )
           }
         </div>

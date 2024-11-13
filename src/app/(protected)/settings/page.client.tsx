@@ -63,7 +63,7 @@ export default function PageClient({ user }: PageClientProps) {
                   />
                 </CardContent>
                 <CardFooter>
-                  <Button type="submit">Save changes</Button>
+                  <Button type="submit" disabled={ form.formState.isSubmitting }>Save changes</Button>
                 </CardFooter>
               </form>
             </Form>    

@@ -6,7 +6,6 @@ import { signOut } from "next-auth/react"
 import { Settings, LogOut, LayoutDashboard, ChevronsUpDown } from "lucide-react"
 
 import { useAppSelector } from "@/stores/store"
-import { type RouterOutputs } from "@/trpc/react"
 
 import { 
   Sidebar, 
@@ -55,11 +54,7 @@ const AccountItems: SidebarItem[] = [
   }
 ]
 
-type LayoutSidebarProps = {
-  user: RouterOutputs["user"]["getProfile"]
-}
-
-export function LayoutSidebar({ user }: LayoutSidebarProps) {
+export function LayoutSidebar() {
   const pathname = usePathname()
   const name = useAppSelector(state => state.user.name)
 
@@ -97,8 +92,8 @@ export function LayoutSidebar({ user }: LayoutSidebarProps) {
                   className="w-full justify-start gap-4"
                 >
                   <Avatar>
-                    <AvatarImage src={user.image ?? ''} alt={user.name ?? ''} />
-                    <AvatarFallback>{(user.name ?? '').charAt(0)}</AvatarFallback>
+                    <AvatarImage src="" alt={name} />
+                    <AvatarFallback>{(name).charAt(0)}</AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col items-start text-left">
                     <span className="font-medium">{ name }</span>

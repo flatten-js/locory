@@ -11,17 +11,17 @@ export default async function ProtectedLayout({ children }: { children: React.Re
   const user = await api.user.getProfile()
 
   return (
-      <>
-        <LayoutClient user={user}>
-          <LayoutSidebar user={user} />
-          <main className="flex flex-col w-full h-screen">
-            <div className="flex items-center p-4">
-              <SidebarTrigger />
-            </div>
-            { children }
-          </main>
-        </LayoutClient>
-        <Toaster />
-      </>
+    <>
+      <LayoutClient user={user}>
+        <LayoutSidebar />
+        <main className="flex flex-col w-full h-screen">
+          <div className="flex items-center p-4">
+            <SidebarTrigger />
+          </div>
+          { children }
+        </main>
+      </LayoutClient>
+      <Toaster />
+    </>
   )
 }

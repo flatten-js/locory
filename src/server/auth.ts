@@ -1,3 +1,4 @@
+import { randomInt } from "crypto";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import {
   getServerSession,
@@ -6,6 +7,8 @@ import {
 } from "next-auth";
 import type { Adapter, AdapterUser } from "next-auth/adapters";
 import EmailProvider from "next-auth/providers/email";
+import { createTransport } from "nodemailer";
+import type { SendVerificationRequestParams } from "next-auth/providers/email";
 import { uniqueNamesGenerator, adjectives, animals, type Config } from 'unique-names-generator';
 
 import { env } from "@/env";
@@ -70,6 +73,25 @@ export const authOptions: NextAuthOptions = {
     EmailProvider({
       server: env.EMAIL_SERVER,
       from: env.EMAIL_FROM,
+      async generateVerificationToken() {
+        return randomInt(0, 1_000_000).toString().padStart(6, '0')
+      },
+      async sendVerificationRequest({
+        identifier,
+        provider,
+        token
+      }: SendVerificationRequestParams) {
+        const transport = createTransport(provider.server)
+        const { rejected: [rejected] } = await transport.sendMail({
+          from: provider.from,
+          to: identifier,
+          subject: 'Verify your email address',
+          text: `Your verification code is ${token}`
+        })
+        if (rejected) {
+          throw new Error(`Email (${identifier}) could not be sent`)
+        }
+      }
     }),
     /**
      * ...add more providers here.
