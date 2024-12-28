@@ -10,4 +10,6 @@ WORKDIR /app
 COPY . .
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install
 
-ENTRYPOINT ["pnpm"]
+RUN chmod a+x ./bin/startup.dev.sh
+
+ENTRYPOINT ["./bin/startup.dev.sh"]
